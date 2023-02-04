@@ -80,6 +80,20 @@ class Board:
                         square.occupying_piece = Pawn(
                             (x, y), 'white' if piece[0] == 'w' else 'black', self
                         )
+    # change piece location
+    def move(self, x , y):
+        prev_sq = self.get_square_from_pos(self.selected_piece.pos)
+        next_sq = self.get_square_from_pos((x, y))
+        # update has moved
+        self.selected_piece.has_moved = True
+        # change position
+        self.selected_piece.pos = next_sq.pos
+        next_sq.occupying_piece = self.selected_piece
+        # clear previous
+        prev_sq.occupying_piece = None
+        self.selected_piece = None
+
+
     # Handle clicks on board
     def handle_click(self, mx, my, button):
         x = mx // self.tile_width
@@ -90,22 +104,29 @@ class Board:
             # Testing: Show coord and piece in console
             print(clicked_square.coord + str(clicked_square.occupying_piece))
 
+            # move
+            # select piece
+            if self.selected_piece is None:
+                if clicked_square.occupying_piece is not None:
+                    self.selected_piece = clicked_square.occupying_piece
+            else:
+                self.move(x, y)
+                print()
         # Left Click
         if button == 3:
             # highlight/un-highlight selected square
-            if clicked_square.highlight == False:
+            if not clicked_square.highlight:
                 clicked_square.highlight = True
             else:
                 clicked_square.highlight = False
 
-        # Testing: Moving the pieces off squares
-        #if clicked_square.occupying_piece != None:
-        #    new_square = self.get_square_from_pos()
-        #    new_square.occupying_piece = clicked_square.occupying_piece
-        #    clicked_square.occupying_piece = None
-
-
-    # Draw squares from array
+    # Draw
     def draw(self, display):
+        # when clicked, highlight current square and legal moves
+#        if self.selected_piece is not None:
+#            self.get_square_from_pos(self.selected_piece.pos).highlight = True
+#            for square in self.selected_piece.get_legal_moves(self):
+#                square.highlight = True
+        # draw squares from array
         for square in self.squares:
             square.draw(display)

@@ -7,3 +7,10 @@ class Piece:
         self.y = pos[1]
         self.color = color
         self.has_moved = False
+
+
+
+
+
+
+
