@@ -11,15 +11,21 @@ class Pawn(Piece):
         # give letter notation
         self.notation = ' '
     # get all moves for Pawn, then check for legality
-    def get_all_moves(self):
+    def get_all_moves(self, board):
         output =[]
-        if self.has_moved:
-            pass
+        if not self.has_moved:
+            move = board.get_square_from_pos(((self.pos[0]), (self.pos[1] - 1)))
+            output.append(move)
+            move = board.get_square_from_pos(((self.pos[0]), (self.pos[1] - 2)))
+            output.append(move)
+        else:
+            move = board.get_square_from_pos(((self.pos[0]), (self.pos[1] - 1)))
+            output.append(move)
         return output
 
     # do checks for check/checkmate, color(all pieces block, but if opp color, you can take)
     def get_legal_moves(self):
-        output =[]
+        output = []
 
         # Castling - King cannot move through check
         # Promotion of Pawn
