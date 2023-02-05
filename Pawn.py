@@ -12,16 +12,33 @@ class Pawn(Piece):
         self.notation = ' '
     # get all moves for Pawn, then check for legality
     def get_all_moves(self, board):
-        output =[]
-        if not self.has_moved:
-            move = board.get_square_from_pos(((self.pos[0]), (self.pos[1] - 1)))
-            output.append(move)
-            move = board.get_square_from_pos(((self.pos[0]), (self.pos[1] - 2)))
-            output.append(move)
+        output = []
+        if self.color == 'white':
+            if not self.has_moved:
+                move = board.get_square_from_pos(((self.pos[0]), (self.pos[1] - 1)))
+                if move is not None:
+                    output.append(move)
+                move = board.get_square_from_pos(((self.pos[0]), (self.pos[1] - 2)))
+                if move is not None:
+                    output.append(move)
+            else:
+                move = board.get_square_from_pos(((self.pos[0]), (self.pos[1] - 1)))
+                if move is not None:
+                    output.append(move)
         else:
-            move = board.get_square_from_pos(((self.pos[0]), (self.pos[1] - 1)))
-            output.append(move)
+            if not self.has_moved:
+                move = board.get_square_from_pos(((self.pos[0]), (self.pos[1] + 1)))
+                if move is not None:
+                    output.append(move)
+                move = board.get_square_from_pos(((self.pos[0]), (self.pos[1] + 2)))
+                if move is not None:
+                    output.append(move)
+            else:
+                move = board.get_square_from_pos(((self.pos[0]), (self.pos[1] + 1)))
+                if move is not None:
+                    output.append(move)
         return output
+
 
     # do checks for check/checkmate, color(all pieces block, but if opp color, you can take)
     def get_legal_moves(self):
