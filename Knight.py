@@ -46,5 +46,9 @@ class Knight(Piece):
         move = board.get_square_from_pos(((self.pos[0] + 2), (self.pos[1] + 1)))
         if move is not None:
             output.append(move)
+        return output
+    # do checks for check/checkmate, color(all pieces block, but if opp color, you can take)
+    def get_legal_moves(self):
+        output = []
 
         return output

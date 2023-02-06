@@ -15,39 +15,84 @@ class Queen(Piece):
     def get_all_moves(self, board):
         output = []
         # NW & SE
-        for i in range(9):
+        for i in range(1, 8):
             move = board.get_square_from_pos((self.pos[0] - i, (self.pos[1] - i)))
             if move is not None:
-                output.append(move)
-        for i in range(9):
+                if move.occupying_piece is None:
+                    output.append(move)
+                else:
+                    if move.occupying_piece.color != self.color:
+                        output.append(move)
+                    break
+        for i in range(1, 8):
             move = board.get_square_from_pos((self.pos[0] + i, (self.pos[1] + i)))
             if move is not None:
-                output.append(move)
+                if move.occupying_piece is None:
+                    output.append(move)
+                else:
+                    if move.occupying_piece.color != self.color:
+                        output.append(move)
+                    break
         # NE & SW
-        for i in range(9):
+        for i in range(1, 8):
             move = board.get_square_from_pos(((self.pos[0] - i), self.pos[1] + i))
             if move is not None:
-                output.append(move)
-        for i in range(9):
+                if move.occupying_piece is None:
+                    output.append(move)
+                else:
+                    if move.occupying_piece.color != self.color:
+                        output.append(move)
+                    break
+        for i in range(1, 8):
             move = board.get_square_from_pos(((self.pos[0] + i), self.pos[1] - i))
             if move is not None:
-                output.append(move)
+                if move.occupying_piece is None:
+                    output.append(move)
+                else:
+                    if move.occupying_piece.color != self.color:
+                        output.append(move)
+                    break
         # up & down
-        for i in range(9):
+        for i in range(1, 8):
             move = board.get_square_from_pos((self.pos[0], (self.pos[1] - i)))
             if move is not None:
-                output.append(move)
-        for i in range(9):
+                if move.occupying_piece is None:
+                    output.append(move)
+                else:
+                    if move.occupying_piece.color != self.color:
+                        output.append(move)
+                    break
+        for i in range(1, 8):
             move = board.get_square_from_pos((self.pos[0], (self.pos[1] + i)))
             if move is not None:
-                output.append(move)
+                if move.occupying_piece is None:
+                    output.append(move)
+                else:
+                    if move.occupying_piece.color != self.color:
+                        output.append(move)
+                    break
         # left & right
-        for i in range(9):
+        for i in range(1, 8):
             move = board.get_square_from_pos(((self.pos[0] - i), self.pos[1]))
             if move is not None:
-                output.append(move)
-        for i in range(9):
+                if move.occupying_piece is None:
+                    output.append(move)
+                else:
+                    if move.occupying_piece.color != self.color:
+                        output.append(move)
+                    break
+        for i in range(1, 8):
             move = board.get_square_from_pos(((self.pos[0] + i), self.pos[1]))
             if move is not None:
-                output.append(move)
+                if move.occupying_piece is None:
+                    output.append(move)
+                else:
+                    if move.occupying_piece.color != self.color:
+                        output.append(move)
+                    break
+        return output
+    # do checks for check/checkmate, color(all pieces block, but if opp color, you can take)
+    def get_legal_moves(self):
+        output = []
+
         return output
