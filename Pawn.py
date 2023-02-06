@@ -13,29 +13,56 @@ class Pawn(Piece):
     # get all moves for Pawn, then check for legality
     def get_all_moves(self, board):
         output = []
+        # pawn movement for white
         if self.color == 'white':
+            # two possible moves if haven't moved yet
             if not self.has_moved:
                 move = board.get_square_from_pos(((self.pos[0]), (self.pos[1] - 1)))
                 if move is not None:
-                    output.append(move)
+                    if move.occupying_piece is None:
+                        output.append(move)
                 move = board.get_square_from_pos(((self.pos[0]), (self.pos[1] - 2)))
                 if move is not None:
-                    output.append(move)
+                    if move.occupying_piece is None:
+                        output.append(move)
             else:
                 move = board.get_square_from_pos(((self.pos[0]), (self.pos[1] - 1)))
                 if move is not None:
+                    if move.occupying_piece is None:
+                        output.append(move)
+            # check for enemies on diagonals
+            move = board.get_square_from_pos(((self.pos[0] - 1), (self.pos[1] - 1)))
+            if move is not None:
+                if move.occupying_piece is not None and move.occupying_piece.color == 'black':
                     output.append(move)
+            move = board.get_square_from_pos(((self.pos[0] + 1), (self.pos[1] - 1)))
+            if move is not None:
+                if move.occupying_piece is not None and move.occupying_piece.color == 'black':
+                    output.append(move)
+        # pawn movement for black
         else:
             if not self.has_moved:
                 move = board.get_square_from_pos(((self.pos[0]), (self.pos[1] + 1)))
                 if move is not None:
-                    output.append(move)
+                    if move.occupying_piece is None:
+                        output.append(move)
                 move = board.get_square_from_pos(((self.pos[0]), (self.pos[1] + 2)))
                 if move is not None:
-                    output.append(move)
+                    if move.occupying_piece is None:
+                        output.append(move)
             else:
                 move = board.get_square_from_pos(((self.pos[0]), (self.pos[1] + 1)))
                 if move is not None:
+                    if move.occupying_piece is None:
+                        output.append(move)
+            # check for enemies on diagonals
+            move = board.get_square_from_pos(((self.pos[0] - 1), (self.pos[1] + 1)))
+            if move is not None:
+                if move.occupying_piece is not None and move.occupying_piece.color == 'white':
+                    output.append(move)
+            move = board.get_square_from_pos(((self.pos[0] + 1), (self.pos[1] + 1)))
+            if move is not None:
+                if move.occupying_piece is not None and move.occupying_piece.color == 'white':
                     output.append(move)
         return output
 
