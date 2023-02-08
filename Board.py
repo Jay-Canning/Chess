@@ -95,7 +95,11 @@ class Board:
         # Un-highlight all squares
         for square in self.squares:
             square.highlight = False
-
+        # Toggle Turn
+        if self.turn == 'white':
+            self.turn = 'black'
+        elif self.turn == 'black':
+            self.turn = 'white'
 
     # Handle clicks on board
     def handle_click(self, mx, my, button):
@@ -107,7 +111,8 @@ class Board:
             # select piece
             if self.selected_piece is None:
                 if clicked_square.occupying_piece is not None:
-                    self.selected_piece = clicked_square.occupying_piece
+                    if clicked_square.occupying_piece.color == self.turn:
+                        self.selected_piece = clicked_square.occupying_piece
             # if there is a selected piece,
             else:
                 # occupied landing-square:
@@ -116,18 +121,16 @@ class Board:
                     if clicked_square.occupying_piece.color == self.selected_piece.color:
                         for square in self.squares:
                             square.highlight = False
-                        self.selected_piece = clicked_square.occupying_piece
+                        self.selected_piece = None
 
-                    # NEED TO IMPLEMENT TURNS AND CHECKS
+                    # NEED TO IMPLEMENT CHECKS
                     # THEN PAWN PROMO, EN PASSENT, CASTLING
-                    # MAKE SURE PIECES ONLY MAKE LEGAL MOVES
+                    # MAKE SURE PIECES CAN ONLY MAKE LEGAL MOVES
 
                     # if it is an opponents piece, check if you can take it, then move or reset
                     else:
-                        print(clicked_square.occupying_piece.color)
                         if clicked_square in self.selected_piece.get_all_moves(self):
                             self.move(x, y)
-                            print("moved that shit homie")
                         # or deselect
                         else:
                             for square in self.squares:
@@ -138,14 +141,11 @@ class Board:
                 if clicked_square.occupying_piece is None:
                     if clicked_square in self.selected_piece.get_all_moves(self):
                         self.move(x, y)
-                        print("moved that shit homie")
                     # or deselect
                     else:
                         for square in self.squares:
                             square.highlight = False
                         self.selected_piece = None
-
-
         # Left Click
         if button == 3:
             # highlight/un-highlight selected square
