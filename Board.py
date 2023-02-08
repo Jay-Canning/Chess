@@ -47,7 +47,9 @@ class Board:
                 return square
     # Return a piece from a given position if it occupies the square
     def get_piece_from_pos(self, pos):
-        return self.get_square_from_pos(pos).occupying_piece
+        if self.get_square_from_pos(pos) is not None:
+            if self.get_square_from_pos(pos).occupying_piece is not None:
+                return self.get_square_from_pos(pos).occupying_piece
     # setup board starting position
     def setup_board(self):
         # iterating 2d list
@@ -84,8 +86,38 @@ class Board:
     def move(self, x , y):
         prev_sq = self.get_square_from_pos(self.selected_piece.pos)
         next_sq = self.get_square_from_pos((x, y))
+        # if pawn takes en passent, capture the pawn below the target square
+        if self.selected_piece.notation == ' ':
+            if self.selected_piece.color == 'white':
+                sq = self.get_square_from_pos((next_sq.x, (next_sq.y + 1)))
+                pawn = self.get_square_from_pos((next_sq.x, (next_sq.y + 1))).occupying_piece
+                if pawn is not None:
+                    if pawn.en_passent_available:
+                        # set square to no occupying piece
+                        sq.occupying_piece = None
+            if self.selected_piece.color == 'black':
+                sq = self.get_square_from_pos((next_sq.x, (next_sq.y - 1)))
+                pawn = self.get_square_from_pos((next_sq.x, (next_sq.y - 1))).occupying_piece
+                if pawn is not None:
+                    if pawn.en_passent_available:
+                        # set square to no occupying piece
+                        sq.occupying_piece = None
+        # en passent is no longer available
+        for s in self.squares:
+            if s.occupying_piece is not None:
+                if s.occupying_piece.notation == ' ':
+                    s.occupying_piece.en_passent_available = False
         # update has moved
         self.selected_piece.has_moved = True
+        # if is a pawn move that moves 2 squares, en passent is true
+        if self.selected_piece.notation == ' ':
+            if self.selected_piece.color == 'white':
+                diff = (prev_sq.y) - (next_sq.y)
+            else:
+                diff = (next_sq.y) - (prev_sq.y)
+            if diff == 2:
+                self.selected_piece.en_passent_available = True
+
         # change position
         self.selected_piece.pos = next_sq.pos
         next_sq.occupying_piece = self.selected_piece
@@ -95,6 +127,7 @@ class Board:
         # Un-highlight all squares
         for square in self.squares:
             square.highlight = False
+
         # Toggle Turn
         if self.turn == 'white':
             self.turn = 'black'
@@ -108,6 +141,9 @@ class Board:
         clicked_square = self.get_square_from_pos((x, y))
         # Right Click
         if button == 1:
+            if clicked_square.occupying_piece is not None:
+                if clicked_square.occupying_piece.notation == ' ':
+                    print(str(clicked_square.occupying_piece.en_passent_available))
             # select piece
             if self.selected_piece is None:
                 if clicked_square.occupying_piece is not None:
@@ -116,7 +152,7 @@ class Board:
             # if there is a selected piece,
             else:
                 # occupied landing-square:
-                # if it is your own piece, select that piece instead
+                # if it is your own piece, deselect
                 if clicked_square.occupying_piece is not None:
                     if clicked_square.occupying_piece.color == self.selected_piece.color:
                         for square in self.squares:
@@ -124,7 +160,7 @@ class Board:
                         self.selected_piece = None
 
                     # NEED TO IMPLEMENT CHECKS/MATE
-                    # THEN PAWN PROMO (push/cap, select promo, new piece, check if king in check etc)
+                    # PAWN PROMO (push/cap, select promo, new piece, check if king in check etc)
                     # EN PASSENT, CASTLING (move Rook with King)
                     # MAKE SURE PIECES CAN ONLY MAKE LEGAL MOVES
 

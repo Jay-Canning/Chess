@@ -10,6 +10,8 @@ class Pawn(Piece):
         self.img = pygame.transform.scale(self.img, (board.tile_width - 15, board.tile_height - 15))
         # give letter notation
         self.notation = ' '
+        self.en_passent_available = False
+
     # get all moves for Pawn, then check for legality
     def get_all_moves(self, board):
         output = []
@@ -39,6 +41,19 @@ class Pawn(Piece):
             if move is not None:
                 if move.occupying_piece is not None and move.occupying_piece.color == 'black':
                     output.append(move)
+            # check for en passent
+            # left
+            piece = board.get_piece_from_pos(((self.pos[0] - 1), (self.pos[1])))
+            move = board.get_square_from_pos(((self.pos[0] - 1), (self.pos[1] - 1)))
+            if piece is not None and piece.en_passent_available:
+                if move is not None:
+                    output.append(move)
+            # right
+            piece = board.get_piece_from_pos(((self.pos[0] + 1), (self.pos[1])))
+            move = board.get_square_from_pos(((self.pos[0] + 1), (self.pos[1] - 1)))
+            if piece is not None and piece.en_passent_available:
+                if move is not None:
+                    output.append(move)
         # pawn movement for black
         else:
             if not self.has_moved:
@@ -64,6 +79,18 @@ class Pawn(Piece):
             if move is not None:
                 if move.occupying_piece is not None and move.occupying_piece.color == 'white':
                     output.append(move)
+            # check for en passent
+            piece = board.get_piece_from_pos(((self.pos[0] + 1), (self.pos[1])))
+            move = board.get_square_from_pos(((self.pos[0] + 1), (self.pos[1] + 1)))
+            if piece is not None and piece.en_passent_available:
+                if move is not None:
+                    output.append(move)
+            piece = board.get_piece_from_pos(((self.pos[0] - 1), (self.pos[1])))
+            move = board.get_square_from_pos(((self.pos[0] - 1), (self.pos[1] + 1)))
+            if piece is not None and piece.en_passent_available:
+                if move is not None:
+                    output.append(move)
+
         return output
 
 
