@@ -123,8 +123,9 @@ class Board:
                             square.highlight = False
                         self.selected_piece = None
 
-                    # NEED TO IMPLEMENT CHECKS
-                    # THEN PAWN PROMO, EN PASSENT, CASTLING
+                    # NEED TO IMPLEMENT CHECKS/MATE
+                    # THEN PAWN PROMO (push/cap, select promo, new piece, check if king in check etc)
+                    # EN PASSENT, CASTLING (move Rook with King)
                     # MAKE SURE PIECES CAN ONLY MAKE LEGAL MOVES
 
                     # if it is an opponents piece, check if you can take it, then move or reset
