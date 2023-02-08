@@ -45,15 +45,17 @@ class Pawn(Piece):
             # left
             piece = board.get_piece_from_pos(((self.pos[0] - 1), (self.pos[1])))
             move = board.get_square_from_pos(((self.pos[0] - 1), (self.pos[1] - 1)))
-            if piece is not None and piece.en_passent_available:
-                if move is not None:
-                    output.append(move)
+            if piece is not None:
+                if piece.notation == ' ' and piece.en_passent_available:
+                    if move is not None:
+                        output.append(move)
             # right
             piece = board.get_piece_from_pos(((self.pos[0] + 1), (self.pos[1])))
             move = board.get_square_from_pos(((self.pos[0] + 1), (self.pos[1] - 1)))
-            if piece is not None and piece.en_passent_available:
-                if move is not None:
-                    output.append(move)
+            if piece is not None:
+                if piece.notation == ' ' and piece.en_passent_available:
+                    if move is not None:
+                        output.append(move)
         # pawn movement for black
         else:
             if not self.has_moved:
@@ -82,14 +84,16 @@ class Pawn(Piece):
             # check for en passent
             piece = board.get_piece_from_pos(((self.pos[0] + 1), (self.pos[1])))
             move = board.get_square_from_pos(((self.pos[0] + 1), (self.pos[1] + 1)))
-            if piece is not None and piece.en_passent_available:
-                if move is not None:
-                    output.append(move)
+            if piece is not None:
+                if piece.notation == ' ' and piece.en_passent_available:
+                    if move is not None:
+                        output.append(move)
             piece = board.get_piece_from_pos(((self.pos[0] - 1), (self.pos[1])))
             move = board.get_square_from_pos(((self.pos[0] - 1), (self.pos[1] + 1)))
-            if piece is not None and piece.en_passent_available:
-                if move is not None:
-                    output.append(move)
+            if piece is not None:
+                if piece.notation == ' ' and piece.en_passent_available:
+                    if move is not None:
+                        output.append(move)
 
         return output
 

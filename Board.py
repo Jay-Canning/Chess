@@ -141,9 +141,6 @@ class Board:
         clicked_square = self.get_square_from_pos((x, y))
         # Right Click
         if button == 1:
-            if clicked_square.occupying_piece is not None:
-                if clicked_square.occupying_piece.notation == ' ':
-                    print(str(clicked_square.occupying_piece.en_passent_available))
             # select piece
             if self.selected_piece is None:
                 if clicked_square.occupying_piece is not None:
